@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "styles/Home.module.scss";
 
-const Home: NextPage = () => {
+const FollowBack: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,27 +14,12 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <span>IG Information!</span>
+          Who does not <span>follow you back?</span>
         </h1>
 
-        <h2>The place to handle your personal data exported by Instagram</h2>
-
         <p className={styles.description}>
-          Get started by choosing one of our available options!
+          Let's see which accounts you can remove now
         </p>
-
-        <div className={styles.grid}>
-          <Link href="/follow-back">
-            <a className={styles.card}>
-              <h2>Who does not follow you back? &rarr;</h2>
-              <p>
-                Find exactly who person doesn't follow you by providing the
-                files <code className={styles.code}>followers.json</code> and{" "}
-                <code className={styles.code}>following.json</code>{" "}
-              </p>
-            </a>
-          </Link>
-        </div>
       </main>
 
       <footer className={styles.footer}>
@@ -54,4 +38,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default FollowBack;
