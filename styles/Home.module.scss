@@ -5,7 +5,7 @@
 }
 
 .main {
-  min-height: 100vh;
+  min-height: 90vh;
   padding: 4rem 0;
   flex: 1;
   display: flex;
@@ -85,11 +85,23 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 450px;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+}
+
+.selectedCard {
+  background-color: rgba($color: $mainBlue, $alpha: 0.3);
+  color: $mainBlue;
+  border-color: $mainBlue;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
+  background-color: white;
   color: $mainBlue;
   border-color: $mainBlue;
 }
@@ -115,4 +127,8 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.scrollbar {
+  max-height: 430px;
 }

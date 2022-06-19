@@ -26,14 +26,14 @@ const Home: NextPage = () => {
 
         <div className={styles.grid}>
           <Link href="/follow-back">
-            <a className={styles.card}>
+            <div className={styles.card}>
               <h2>Who does not follow you back? &rarr;</h2>
               <p>
-                Find exactly who person doesn't follow you by providing the
+                Find exactly who person doesn&apos;t follow you by providing the
                 files <code className={styles.code}>followers.json</code> and{" "}
                 <code className={styles.code}>following.json</code>{" "}
               </p>
-            </a>
+            </div>
           </Link>
         </div>
       </main>

@@ -1,9 +1,62 @@
+import { ChangeEvent, useRef, useState } from "react";
+import axios from "axios";
+import classNames from "classnames";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import PerfectScrollbar from "react-perfect-scrollbar";
+
 import styles from "styles/Home.module.scss";
 
 const FollowBack: NextPage = () => {
+  const [followersFile, setFollowersFile] = useState<File | null>(null);
+  const [followingFile, setFollowingFile] = useState<File | null>(null);
+  const [dontFollowMe, setDontFollowMe] = useState<any[]>([]);
+
+  const hiddenFollowersFileInput = useRef<HTMLInputElement>(null);
+  const hiddenFollowingFileInput = useRef<HTMLInputElement>(null);
+
+  const handleProcessFileRequest = async () => {
+    if (followersFile && followingFile) {
+      const formData = new FormData();
+
+      formData.append("followersData", followersFile, followersFile.name);
+      formData.append("followingData", followingFile, followingFile.name);
+
+      const response = await axios.post("api/follow-back", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setDontFollowMe(response.data.results);
+    }
+  };
+
+  const handleFollowersFileInputClick = () => {
+    if (hiddenFollowersFileInput.current) {
+      hiddenFollowersFileInput.current.click();
+    }
+  };
+
+  const handleFollowingFileInputClick = () => {
+    if (hiddenFollowingFileInput.current) {
+      hiddenFollowingFileInput.current.click();
+    }
+  };
+
+  const handleFollowersChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFollowersFile(event.target.files[0]);
+    }
+  };
+
+  const handleFollowingChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFollowingFile(event.target.files[0]);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -18,8 +71,65 @@ const FollowBack: NextPage = () => {
         </h1>
 
         <p className={styles.description}>
-          Let's see which accounts you can remove now
+          Let&apos;s see which accounts you can remove now
         </p>
+
+        {dontFollowMe.length === 0 && (
+          <>
+            <div className={styles.grid}>
+              <div
+                className={classNames(
+                  styles.card,
+                  followersFile && styles.selectedCard
+                )}
+                onClick={handleFollowersFileInputClick}
+              >
+                <p>{followersFile ? "Selected!" : "Select followers file"}</p>
+                <input
+                  type="file"
+                  accept=".json"
+                  ref={hiddenFollowersFileInput}
+                  onChange={handleFollowersChange}
+                />
+              </div>
+
+              <div
+                className={classNames(
+                  styles.card,
+                  followingFile && styles.selectedCard
+                )}
+                onClick={handleFollowingFileInputClick}
+              >
+                <p>{followingFile ? "Selected!" : "Select following file"}</p>
+                <input
+                  type="file"
+                  accept=".json"
+                  ref={hiddenFollowingFileInput}
+                  onChange={handleFollowingChange}
+                />
+              </div>
+            </div>
+
+            {followersFile && followingFile && (
+              <div className={styles.card} onClick={handleProcessFileRequest}>
+                Process Files
+              </div>
+            )}
+          </>
+        )}
+
+        <PerfectScrollbar className={styles.scrollbar}>
+          <div className={styles.grid}>
+            {dontFollowMe.map((follower) => (
+              <div key={follower.value} className={styles.card}>
+                <p>{follower.value}</p>
+                <a href={follower.href} target="_blank" rel="noreferrer">
+                  Profile Link
+                </a>
+              </div>
+            ))}
+          </div>
+        </PerfectScrollbar>
       </main>
 
       <footer className={styles.footer}>
