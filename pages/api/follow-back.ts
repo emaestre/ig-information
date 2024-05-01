@@ -9,6 +9,11 @@ type Data = {
   results?: any[];
 };
 
+type FilesRequestType = {
+  followersData: formidable.File[];
+  followingData: formidable.File[];
+};
+
 export const config = {
   api: {
     bodyParser: false,
@@ -29,16 +34,20 @@ export default function handler(
       return;
     }
 
-    const followersBuffer = await fs.readFile(files.followersData[0].filepath);
-    const followersParsed = JSON.parse(
-      followersBuffer.toString()
-    ).relationships_followers;
+    const typedFiles = files as unknown as FilesRequestType;
+
+    const followersBuffer = await fs.readFile(
+      typedFiles.followersData[0].filepath
+    );
+    const followersParsed = JSON.parse(followersBuffer.toString());
 
     const followers = followersParsed.map(
       (follower: { string_list_data: any[] }) => follower.string_list_data[0]
     );
 
-    const followingBuffer = await fs.readFile(files.followingData[0].filepath);
+    const followingBuffer = await fs.readFile(
+      typedFiles.followingData[0].filepath
+    );
     const followingParsed = JSON.parse(
       followingBuffer.toString()
     ).relationships_following;
