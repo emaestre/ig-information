@@ -70,6 +70,11 @@ const FollowBack: NextPage = () => {
           Who does not <span>follow you back?</span>
         </h1>
 
+        <p className={styles.count}>
+          You have an amount of <span>{dontFollowMe.length}</span> accounts that
+          don&apos;t follow you back
+        </p>
+
         <p className={styles.description}>
           Let&apos;s see which accounts you can remove now
         </p>
